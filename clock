@@ -2,7 +2,6 @@
 
 from datetime import datetime
 import time
-import os
 
 file_path = r'C:\Users\User\Desktop\Daniels-schoolhours.txt.txt' 
 
