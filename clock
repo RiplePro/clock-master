@@ -61,15 +61,21 @@ def get_total(wh):
 	week_hours = wh[1::]
 	total_hours = 0
 	total_minutes = 0
+	total_seconds = 0
 	for line in week_hours:
 		time = line.split(': ')[1].replace('HR', '').strip().split(':')
 		total_hours += int(time[0])
 		total_minutes += int(time[1])
+		total_seconds += int(time[2])
+	total_minutes += int(total_seconds / 60)
 	total_hours += int(total_minutes / 60)
 	total_minutes = total_minutes % 60
+	total_seconds = total_seconds % 60
 	if total_minutes < 10:
 		total_minutes = f'0{total_minutes}'
-	return f'{total_hours}:{total_minutes}HR'
+	if total_seconds < 10:
+		total_seconds = f'0{total_seconds}'
+	return f'{total_hours}:{total_minutes}:{total_seconds}HR'
 
 
 # ==================
@@ -129,10 +135,11 @@ def write_changes(lines):
 def handle_input(i, start):
 	if i.lower() == 't':
 		diff = int(time.time() - start)
+		seconds = int(diff % 60)
 		minutes = int(diff / 60)
 		hours = int(minutes / 60)
 		minutes %= 60
-		print(f'Current Running Time: {hours}:{minutes}')
+		print(f'Current Running Time: {hours}:{minutes}:{seconds}')
 
 
 # ==================
@@ -143,9 +150,9 @@ def handle_input(i, start):
 
 def run_time():
 	print('\n\n********************************\n')
-	print('\n---- You have clocked in... ----\n')
-	print('\n * Enter [t] to show current time')
-	print(' * Enter [q] to end\n')
+	print('\n---- Welcome :D You\'ve clocked in! ----\n')
+	print('\n * Enter [t] to show the current time')
+	print(' * Enter [q] to end your work session\n')
 	print('********************************\n')
 	start = time.time()
 	i = ''
@@ -167,10 +174,11 @@ def add_time(s, week_hours):
 	total_minutes = int(s / 60)
 	total_hours = int(total_minutes / 60)
 	total_minutes %= 60
-	new_line = f'\t{get_date()}: {total_hours}:{total_minutes}HR\n'
+	total_seconds = s % 60
+	new_line = f'\t{get_date()}: {total_hours}:{total_minutes}:{total_seconds}HR\n'
 	current_date_lines = [ '', new_line ] # First value is removed in get_total
 	duplicate_indexes = []
-	print(f'\n\nClocked for = {total_hours}:{total_minutes}HR\n')
+	print(f'\n\nHours worked clocked for = {total_hours}:{total_minutes}:{total_seconds}HR\n')
 	for i in range(len(week_hours)):
 		line = week_hours[i]
 		if get_date() in line:
