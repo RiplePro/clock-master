@@ -11,7 +11,7 @@ cd /some/dir
 git clone https://github.com/RiplePro/clock-master.git
 # Add PATH="PATH:/some/dir/clock" to your profile/rc file.
 ```
- - with [mac](https://github.com/RiplePro/clock-master.git):
+ - with [mac](https://github.com/Macuyler/mac/blob/master/mac):
 ```
 mac install https://github.com/RiplePro/clock-master.git
 ```
