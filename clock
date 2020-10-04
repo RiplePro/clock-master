@@ -1,9 +1,18 @@
 #!/usr/bin/env python3
 
 from datetime import datetime
-import time
+from pathlib import Path
+import time, sys
 
-file_path = r'C:\Users\User\Desktop\Daniels-schoolhours.txt.txt' 
+file_path = ''
+try: 
+		conf = open(f'{Path.home()}/.clock.conf', 'r').read()
+		file_path = conf.strip()
+except FileNotFoundError:
+	print('\n * No config file found!')
+	print('	Create ~/.clock.conf and put the path to your clock log file inside it.')
+	print('	See the READ.md for more details! :p \n')
+	sys.exit(0) 
 
 
 # ==================
