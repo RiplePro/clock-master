@@ -30,7 +30,7 @@ Week 2:
   01/10/20: 2:21:00HR
   01/11/20: 1:22:00HR
 
-  Total = 17:52HR
+  Total = 17:52:00HR
 ```
 Clock will take care of logging how many hours you work each day, and giving you a weekly total. It will automatically take care of formatting each new week, so all you have to do is copy and paste into your invoice.
 
