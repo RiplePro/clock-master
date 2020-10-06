@@ -5,9 +5,10 @@ from pathlib import Path
 import time, sys
 
 file_path = ''
+folder_path = ''
 try: 
 		conf = open(f'{Path.home()}/.clock.conf', 'r').read()
-		file_path = conf.strip()
+		folder_path = conf.strip()
 except FileNotFoundError:
 	print('\n * No config file found!')
 	print('	Create ~/.clock.conf and put the path to your clock log file inside it.')
@@ -190,7 +191,15 @@ def add_time(s, week_hours):
 	new_time = get_total(current_date_lines)
 	new_line = f'\t{get_date()}: {new_time}\n'
 	week_hours.append(new_line)
-
+ 
+def check_file(path): 
+	try : 
+		file = open(path, 'r')
+		file.close()
+	except FileNotFoundError:
+		file = open(path, 'w')
+		file.write('Week 1:\n')
+		file.close()
 
 # ==================
 # main:
@@ -198,6 +207,9 @@ def add_time(s, week_hours):
 # ==================
 
 def main():
+	global file_path 
+	file_path = folder_path + sys.argv[1] 
+	check_file(file_path)
 	all_hours = get_hours()
 	week_hours = get_week(all_hours, [])
 	s = run_time()
