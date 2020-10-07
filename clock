@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 import time, sys
 
@@ -25,6 +25,9 @@ def get_date():
 	p_date = str(datetime.date(datetime.now())).split('-')
 	return f'{p_date[1]}/{p_date[2]}/{p_date[0][2::]}'
 
+def parse_date(line):
+	date_string = line.split(':')[0].strip()
+	return datetime.strptime(date_string, "%m/%d/%y")
 
 # ==================
 # get_hours:
@@ -87,6 +90,19 @@ def get_total(wh):
 def get_week_num(prev_week):
 	return str(int(prev_week.replace('Week ', '').replace(':', '').strip()) + 1)
 
+def back_fill(week_hours):
+	filled_week_hours = week_hours[0:1]
+	a_day = timedelta(days = 1)
+	for i in range(len(week_hours)):
+		if i > 1:
+			prev = parse_date(week_hours[i - 1])
+			current = parse_date(week_hours[i])
+			filled_week_hours.append(week_hours[i - 1])
+			while prev + a_day != current:
+				prev += a_day
+				filled_week_hours.append(f'\t{prev.strftime("%m/%d/%y")}: 0:00:00HR\n')				
+	filled_week_hours.append(week_hours[len(week_hours) - 1])
+	return filled_week_hours
 
 # ==================
 # check_weekend:
@@ -95,10 +111,7 @@ def get_week_num(prev_week):
 # ==================
 
 def check_weekend(week_hours):
-	# ===========================
-	# Note:
-	# Possibly add recursive checks to make it work for mutliple weekends?
-	# ===========================
+	week_hours = back_fill(week_hours)
 
 	if len(week_hours) > 8:
 		last_week = []
